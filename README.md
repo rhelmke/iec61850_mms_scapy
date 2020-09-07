@@ -1,6 +1,6 @@
 # iec61850_mms_scapy
 
-Scapy definitions (partially ASN.1) for a small subset of IEC 61850-2 MMS messages.
+Scapy definitions (partially ASN.1) for a small subset of IEC 61850-1 MMS messages.
 Basic functionality of intermediary layers (tpkt, cotp, iso8327-1, iso8823, and iso8650-1) has been implemented.
 
 To bind layers, run:
