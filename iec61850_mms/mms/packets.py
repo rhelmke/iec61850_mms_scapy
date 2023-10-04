@@ -28,7 +28,7 @@ class MMS_Name(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_NAME(
         ASN1F_CHOICE(
-            '',
+            'name',
             MMS_VMD_Specific(),
             MMS_VMD_Specific(),
             MMS_Domain_Specific,
@@ -82,7 +82,8 @@ class MMS_Object_Scope_VMD_Specific(ASN1_Packet):
 
 class MMS_Object_Scope_Domain_Specific(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
-    ASN1_root = ASN1F_OBJECT_SCOPE_DOMAIN_SPECIFIC("objectScopeDomainSpecific", 0)
+    ASN1_root = ASN1F_OBJECT_SCOPE_DOMAIN_SPECIFIC(
+        "objectScopeDomainSpecific", 0)
 
 
 class MMS_Object_Scope_AA_Specific(ASN1_Packet):
@@ -229,7 +230,8 @@ class MMS_Write_Request(ASN1_Packet):
 class MMS_Read_Request(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_READ_REQUEST(
-        ASN1F_optional(ASN1F_READ_REQUEST_SPECIFICATION_WITH_RESULT("specificationWithResult", False)),
+        ASN1F_optional(ASN1F_READ_REQUEST_SPECIFICATION_WITH_RESULT(
+            "specificationWithResult", False)),
         ASN1F_READ_REQUEST_VARIABLE_ACCESS_SPECIFICATION(
             ASN1F_CHOICE(
                 "variableAccessSpecification",
@@ -259,9 +261,12 @@ class MMS_Initiate_Response_PDU(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_INITIATE_RESPONSE_PDU(
         ASN1F_LOCAL_DETAIL_CALLED("localDetailCalled", 0),
-        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLING("negotiatedMaxServOutstandingCalling", 0),
-        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLED("negotiatedMaxServOutstandingCalled", 0),
-        ASN1F_NEGOTIATED_DATA_STRUCTURE_NESTING_LEVEL("negotiatedDataStructureNestingLevel", 0),
+        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLING(
+            "negotiatedMaxServOutstandingCalling", 0),
+        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLED(
+            "negotiatedMaxServOutstandingCalled", 0),
+        ASN1F_NEGOTIATED_DATA_STRUCTURE_NESTING_LEVEL(
+            "negotiatedDataStructureNestingLevel", 0),
         ASN1F_MMS_INIT_RESPONSE_DETAIL(
             ASN1F_NEGOTIATED_VERSION_NUMBER("negotiatedVersionNumber", 0),
             ASN1F_NEGOTIATED_PARAMETER_CBB("negotiatedParameterCBB", None),
@@ -274,9 +279,12 @@ class MMS_Initiate_Request_PDU(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_INITIATE_REQUEST_PDU(
         ASN1F_LOCAL_DETAIL_CALLING("localDetailCalling", 0),
-        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLING("proposedMaxServOutstandingCalling", 0),
-        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLED("proposedMaxServOutstandingCalled", 0),
-        ASN1F_PROPOSED_DATA_STRUCTURE_NESTING_LEVEL("proposedDataStructureNestingLevel", 0),
+        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLING(
+            "proposedMaxServOutstandingCalling", 0),
+        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLED(
+            "proposedMaxServOutstandingCalled", 0),
+        ASN1F_PROPOSED_DATA_STRUCTURE_NESTING_LEVEL(
+            "proposedDataStructureNestingLevel", 0),
         ASN1F_MMS_INIT_REQUEST_DETAIL(
             ASN1F_PROPOSED_VERSION_NUMBER("proposedVersionNumber", 0),
             ASN1F_PROPOSED_PARAMETER_CBB("proposedParameterCBB", None),
