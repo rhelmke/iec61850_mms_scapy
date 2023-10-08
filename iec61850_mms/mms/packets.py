@@ -29,8 +29,8 @@ class MMS_Name(ASN1_Packet):
     ASN1_root = ASN1F_NAME(
         ASN1F_CHOICE(
             'name',
-            MMS_VMD_Specific(),
-            MMS_VMD_Specific(),
+            None,
+            MMS_VMD_Specific,
             MMS_Domain_Specific,
             MMS_AA_Specific
         )
@@ -197,6 +197,8 @@ class MMS_Data(ASN1_Packet):
     ASN1_root = ASN1F_CHOICE(
         'data',
         None,
+        # MMS_Data_Array, -- not implemented
+        # MMS_Data_Structure, -- not implemented
         MMS_Data_Boolean,
         MMS_Data_BitString,
         MMS_Data_Int,
@@ -293,12 +295,56 @@ class MMS_Initiate_Request_PDU(ASN1_Packet):
     )
 
 
+class MMS_FAILURE(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_FAILURE("failure", None)
+
+
+class MMS_ACCESS_RESULT(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_CHOICE(
+        "accessResult",
+        None,
+        MMS_FAILURE,
+        MMS_Data
+    )
+
+
+class MMS_Information_Report(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_INFORMATION_REPORT(
+        ASN1F_CHOICE(
+            "variableAccessSpecification",
+            None,
+            MMS_List_Of_Variables,
+            MMS_Variables_List_Names,
+        ),
+        ASN1F_INFORMATION_REPORT_LIST_OF_ACCESS_RESULT(
+            "listOfAccessResult",
+            None,
+            MMS_ACCESS_RESULT
+        ),
+    )
+
+
+class MMS_Unconfirmed_PDU(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_UNCONFIRMED_PDU(
+        ASN1F_CHOICE(
+            "informationReport",
+            None,
+            MMS_Information_Report
+        ),
+    )
+
+
 class MMS(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_CHOICE(
         "MMS",
         MMS_Confirmed_Request_PDU(),
         MMS_Confirmed_Request_PDU,
+        MMS_Unconfirmed_PDU,
         MMS_Initiate_Request_PDU,
         MMS_Initiate_Response_PDU,
     )
