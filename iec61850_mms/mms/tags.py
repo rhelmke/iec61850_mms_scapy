@@ -12,8 +12,18 @@ class ASN_Tags_MMS(ASN1_Class_UNIVERSAL):
     # PDUs
     CONFIRMED_REQUEST_PDU = 0xa0
     CONFIRMED_RESPONSE_PDU = 0xa1
+    UNCONFIRMED_PDU = 0xa3
     INITIATE_REQUEST_PDU = 0xa8
     INITIATE_RESPONSE_PDU = 0xa9
+
+    # UnconfirmedService
+    INFORMATION_REPORT = 0xa0
+
+    # InformationReport
+    INFORMATION_REPORT_LIST_OF_ACCESS_RESULT = 0xa0
+
+    # AccessResult
+    FAILURE = 0x80
 
     # Requests
     GET_NAME_LIST_REQUEST = 0xa1

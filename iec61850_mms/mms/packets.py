@@ -28,9 +28,9 @@ class MMS_Name(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_NAME(
         ASN1F_CHOICE(
-            '',
-            MMS_VMD_Specific(),
-            MMS_VMD_Specific(),
+            'name',
+            None,
+            MMS_VMD_Specific,
             MMS_Domain_Specific,
             MMS_AA_Specific
         )
@@ -82,7 +82,8 @@ class MMS_Object_Scope_VMD_Specific(ASN1_Packet):
 
 class MMS_Object_Scope_Domain_Specific(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
-    ASN1_root = ASN1F_OBJECT_SCOPE_DOMAIN_SPECIFIC("objectScopeDomainSpecific", 0)
+    ASN1_root = ASN1F_OBJECT_SCOPE_DOMAIN_SPECIFIC(
+        "objectScopeDomainSpecific", 0)
 
 
 class MMS_Object_Scope_AA_Specific(ASN1_Packet):
@@ -196,6 +197,8 @@ class MMS_Data(ASN1_Packet):
     ASN1_root = ASN1F_CHOICE(
         'data',
         None,
+        # MMS_Data_Array, -- not implemented
+        # MMS_Data_Structure, -- not implemented
         MMS_Data_Boolean,
         MMS_Data_BitString,
         MMS_Data_Int,
@@ -229,7 +232,8 @@ class MMS_Write_Request(ASN1_Packet):
 class MMS_Read_Request(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_READ_REQUEST(
-        ASN1F_optional(ASN1F_READ_REQUEST_SPECIFICATION_WITH_RESULT("specificationWithResult", False)),
+        ASN1F_optional(ASN1F_READ_REQUEST_SPECIFICATION_WITH_RESULT(
+            "specificationWithResult", False)),
         ASN1F_READ_REQUEST_VARIABLE_ACCESS_SPECIFICATION(
             ASN1F_CHOICE(
                 "variableAccessSpecification",
@@ -259,9 +263,12 @@ class MMS_Initiate_Response_PDU(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_INITIATE_RESPONSE_PDU(
         ASN1F_LOCAL_DETAIL_CALLED("localDetailCalled", 0),
-        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLING("negotiatedMaxServOutstandingCalling", 0),
-        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLED("negotiatedMaxServOutstandingCalled", 0),
-        ASN1F_NEGOTIATED_DATA_STRUCTURE_NESTING_LEVEL("negotiatedDataStructureNestingLevel", 0),
+        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLING(
+            "negotiatedMaxServOutstandingCalling", 0),
+        ASN1F_NEGOTIATED_MAX_SERV_OUTSTANDING_CALLED(
+            "negotiatedMaxServOutstandingCalled", 0),
+        ASN1F_NEGOTIATED_DATA_STRUCTURE_NESTING_LEVEL(
+            "negotiatedDataStructureNestingLevel", 0),
         ASN1F_MMS_INIT_RESPONSE_DETAIL(
             ASN1F_NEGOTIATED_VERSION_NUMBER("negotiatedVersionNumber", 0),
             ASN1F_NEGOTIATED_PARAMETER_CBB("negotiatedParameterCBB", None),
@@ -274,14 +281,60 @@ class MMS_Initiate_Request_PDU(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_INITIATE_REQUEST_PDU(
         ASN1F_LOCAL_DETAIL_CALLING("localDetailCalling", 0),
-        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLING("proposedMaxServOutstandingCalling", 0),
-        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLED("proposedMaxServOutstandingCalled", 0),
-        ASN1F_PROPOSED_DATA_STRUCTURE_NESTING_LEVEL("proposedDataStructureNestingLevel", 0),
+        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLING(
+            "proposedMaxServOutstandingCalling", 0),
+        ASN1F_PROPOSED_MAX_SERV_OUTSTANDING_CALLED(
+            "proposedMaxServOutstandingCalled", 0),
+        ASN1F_PROPOSED_DATA_STRUCTURE_NESTING_LEVEL(
+            "proposedDataStructureNestingLevel", 0),
         ASN1F_MMS_INIT_REQUEST_DETAIL(
             ASN1F_PROPOSED_VERSION_NUMBER("proposedVersionNumber", 0),
             ASN1F_PROPOSED_PARAMETER_CBB("proposedParameterCBB", None),
             ASN1F_SERVICES_SUPPORTED_CALLING("servicesSupportedCalling", None)
         )
+    )
+
+
+class MMS_FAILURE(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_FAILURE("failure", None)
+
+
+class MMS_ACCESS_RESULT(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_CHOICE(
+        "accessResult",
+        None,
+        MMS_FAILURE,
+        MMS_Data
+    )
+
+
+class MMS_Information_Report(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_INFORMATION_REPORT(
+        ASN1F_CHOICE(
+            "variableAccessSpecification",
+            None,
+            MMS_List_Of_Variables,
+            MMS_Variables_List_Names,
+        ),
+        ASN1F_INFORMATION_REPORT_LIST_OF_ACCESS_RESULT(
+            "listOfAccessResult",
+            None,
+            MMS_ACCESS_RESULT
+        ),
+    )
+
+
+class MMS_Unconfirmed_PDU(ASN1_Packet):
+    ASN1_codec = ASN1_Codecs.BER
+    ASN1_root = ASN1F_UNCONFIRMED_PDU(
+        ASN1F_CHOICE(
+            "informationReport",
+            None,
+            MMS_Information_Report
+        ),
     )
 
 
@@ -291,6 +344,7 @@ class MMS(ASN1_Packet):
         "MMS",
         MMS_Confirmed_Request_PDU(),
         MMS_Confirmed_Request_PDU,
+        MMS_Unconfirmed_PDU,
         MMS_Initiate_Request_PDU,
         MMS_Initiate_Response_PDU,
     )

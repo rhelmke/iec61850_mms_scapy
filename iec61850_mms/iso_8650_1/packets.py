@@ -14,7 +14,8 @@ class CALLED_AP_TITLE_FORM_2(ASN1_Packet):
 
 class CALLED_AE_QUALIFIER_FORM_2(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
-    ASN1_root = ASN1F_CALLED_AE_QUALIFIER_FORM_2("called_ae_qualifier_form_2", 0)
+    ASN1_root = ASN1F_CALLED_AE_QUALIFIER_FORM_2(
+        "called_ae_qualifier_form_2", 0)
 
 
 class CALLING_AP_TITLE_FORM_2(ASN1_Packet):
@@ -24,18 +25,20 @@ class CALLING_AP_TITLE_FORM_2(ASN1_Packet):
 
 class CALLING_AE_QUALIFIER_FORM_2(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
-    ASN1_root = ASN1F_CALLING_AE_QUALIFIER_FORM_2("calling_ae_qualifier_form_2", 0)
+    ASN1_root = ASN1F_CALLING_AE_QUALIFIER_FORM_2(
+        "calling_ae_qualifier_form_2", 0)
 
 
 class ACSE_SERVICE_USER(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
-    ASN1_root = ASN1F_ACSE_SERVICE_USER("service-user", 0, enum=[x for x in range(0, 15)])
+    ASN1_root = ASN1F_ACSE_SERVICE_USER(
+        "service_user", 0, enum=[x for x in range(0, 15)])
 
 
 class AARE(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_AARE_TYPE(
-        ASN1F_APPLICATION_CONTEXT_NAME("application-context-name", None),
+        ASN1F_APPLICATION_CONTEXT_NAME("application_context_name", None),
         ASN1F_AARE_RESULT_TYPE("result", 0, enum=[0, 1, 2]),
         ASN1F_CHOICE(
             "acse_service_user",
@@ -47,7 +50,7 @@ class AARE(ASN1_Packet):
                 ASN1F_INDIRECT_REFERENCE("indirect_reference", 0),
                 ASN1F_ACSE_MMS_DATA(
                     ASN1F_CHOICE(
-                        "MMS PDU",
+                        "MMS_PDU",
                         None,
                         MMS
                     )
@@ -60,7 +63,7 @@ class AARE(ASN1_Packet):
 class AARQ(ASN1_Packet):
     ASN1_codec = ASN1_Codecs.BER
     ASN1_root = ASN1F_AARQ_TYPE(
-        ASN1F_APPLICATION_CONTEXT_NAME("application-context-name", None),
+        ASN1F_APPLICATION_CONTEXT_NAME("application_context_name", None),
         ASN1F_CHOICE(
             "called_ap_title",
             None,
@@ -86,7 +89,7 @@ class AARQ(ASN1_Packet):
                 ASN1F_INDIRECT_REFERENCE("indirect_reference", 0),
                 ASN1F_ACSE_MMS_DATA(
                     ASN1F_CHOICE(
-                        "MMS PDU",
+                        "MMS_PDU",
                         None,
                         MMS
                     )
@@ -103,4 +106,4 @@ class ACSE(ASN1_Packet):
         AARQ(),  # default
         AARQ,
         AARE
-   )
+    )
